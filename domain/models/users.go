@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"strings"
 	"unicode"
 )
 
@@ -40,11 +41,11 @@ func RulesForRegisterUser(req map[string]any, user User) error {
 	}
 
 	// phone policy
-	if len(req["Phone"].(string)) != 10 {
+	if len(strings.TrimSpace(req["Phone"].(string))) != 10 {
 		return errors.New("phone must be 10 digits")
 	}
 
-	pwd := req["Password"].(string)
+	pwd := strings.TrimSpace(req["Password"].(string))
 
 	// password policy
 	if len(pwd) < 6 || len(pwd) > 12 {

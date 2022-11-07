@@ -18,5 +18,20 @@
 The sqlite users table in database is dropped on every start of the server
 
 The endpoints to test are:
-* localhost:8080/v1/register
-* localhost:8080/v1/login
+* [POST] localhost:8080/v1/register
+    ```
+    {
+        "user": "string",
+        "email": "string",
+        "phone": "string",
+        "password": "string"
+    }
+    ```
+
+* [POST] localhost:8080/v1/login
+  ```
+    {
+        "user": "string",
+        "password": "string"
+    }
+    ```

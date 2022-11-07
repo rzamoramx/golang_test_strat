@@ -10,7 +10,7 @@ import (
 
 func Test_RulesForRegisterUser_ok(t *testing.T) {
 	user := User{}
-	req := rest.RequestRegister{Phone: "1234567890", Password: "Ab3456$"}
+	req := rest.RequestRegister{Phone: " 1234567890 ", Password: "Ab3456$"}
 
 	gotError := RulesForRegisterUser(structs.Map(req), user)
 
