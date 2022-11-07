@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"golang_test_strat/adapters/api/rest"
 	"net/http"
 
@@ -19,6 +18,7 @@ func NewRegisterController(app *domain.App) (*RegisterCtrl, error) {
 	return &RegisterCtrl{App: app}, nil
 }
 
+// handle register user requests
 func (class *RegisterCtrl) Register(c echo.Context) error {
 	var request rest.RequestRegister
 
@@ -31,12 +31,14 @@ func (class *RegisterCtrl) Register(c echo.Context) error {
 		return err
 	}
 
+	// domain app handle user register
 	response, err := class.App.UserRegister(request)
-	fmt.Printf("request: %+v\n", request)
+	log.Printf("register endpoint request: %+v", request)
+	log.Printf("register endpoint response: %+v", response)
 
 	if err != nil {
 		log.Error("error: " + err.Error())
-		return c.JSON(http.StatusInternalServerError, "internal server error")
+		return c.JSON(http.StatusBadRequest, response)
 	}
 
 	return c.JSON(http.StatusOK, response)

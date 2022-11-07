@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"log"
 	"net/http"
 
@@ -16,7 +15,6 @@ import (
 
 var (
 	serverPort string = "8080"
-	ctx        context.Context
 )
 
 type CustomValidator struct {
@@ -24,10 +22,10 @@ type CustomValidator struct {
 }
 
 func main() {
-	ctx = context.Background()
-
 	// Http Server
 	e := echo.New()
+
+	// inject custom validator
 	e.Validator = &CustomValidator{validator: validator.New()}
 
 	wireUp(e)
@@ -46,13 +44,15 @@ func main() {
 	e.Logger.Fatal(e.Start(":" + serverPort))
 }
 
+// Inject dependencies
 func wireUp(e *echo.Echo) {
-	dummyDB := database.NewDummyDD()
-	db, ok := dummyDB.(ports.UserDBInterface)
+	// DB dependency
+	db, ok := database.NewSqlite().(ports.UserDBInterface)
 	if !ok {
 		log.Fatal("dummyDB not implement UserDBInterface")
 	}
 
+	// domain app dependency
 	app, err := domain.NewApp(db)
 	if err != nil {
 		log.Fatal("Cannot instantiate app: " + err.Error())
@@ -69,7 +69,6 @@ func wireUp(e *echo.Echo) {
 
 func (cv *CustomValidator) Validate(i interface{}) error {
 	if err := cv.validator.Struct(i); err != nil {
-		// Optionally, you could return the error to give each route more control over the status code
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return nil

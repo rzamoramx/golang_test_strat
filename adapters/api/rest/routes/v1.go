@@ -9,9 +9,10 @@ import (
 	"golang_test_strat/domain"
 )
 
-var AppDep *domain.App
+var AppDep *domain.App // app domain dependency for controllers
 
 func Boostrap(e *echo.Echo) error {
+	// inject app domain dependency to controllers
 	loginController, err := controllers.NewLoginController(AppDep)
 	if err != nil {
 		return errors.New("cannot get login controller instance: " + err.Error())
@@ -22,6 +23,7 @@ func Boostrap(e *echo.Echo) error {
 		return errors.New("cannot get register controller instance: " + err.Error())
 	}
 
+	// add routes to echo
 	v3 := e.Group("/v1")
 	v3.POST("/login", loginController.Login)
 	v3.POST("/register", registerController.Register)

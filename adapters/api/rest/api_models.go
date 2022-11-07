@@ -1,5 +1,10 @@
 package rest
 
+type RequestLogin struct {
+	User     string `json:"user" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}
+
 type RequestRegister struct {
 	User     string `json:"user" validate:"required"`
 	Email    string `json:"email" validate:"required,email"`
@@ -7,10 +12,12 @@ type RequestRegister struct {
 	Password string `json:"password" validate:"required"`
 }
 
-type ResponseRegister struct {
-	Status  string `json:"status" validate:"required"`
-	Message string `json:"message" validate:"required"`
+type Response struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
 }
 
-type ResponseLogin struct {
+type LoginResponse struct {
+	Response
+	Token string `json:"token"`
 }

@@ -5,6 +5,7 @@ import (
 )
 
 type UserDBInterface interface {
-	Retrieve(email string) (models.User, error)
-	Save(user models.User) error
+	RetrieveUserByUniqueFields(email string, phone string, user string) (models.User, error)
+	RetrieveUser(fieldName string, value string) (models.User, error)
+	SaveUser(user models.User) error
 }
